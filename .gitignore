@@ -57,3 +57,6 @@ buck-out/
 
 # CocoaPods
 /ios/Pods/
+
+# Api Keys
+/ios/GoogleService-Info.plist
