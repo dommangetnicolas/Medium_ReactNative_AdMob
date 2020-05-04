@@ -1,48 +1,96 @@
+import {
+  AdEventType,
+  BannerAd,
+  BannerAdSize,
+  InterstitialAd,
+  TestIds,
+  RewardedAd,
+  RewardedAdEventType,
+} from '@react-native-firebase/admob';
 import React, {useEffect, useState} from 'react';
-import {FlatList, SafeAreaView} from 'react-native';
-import {AdEventType, InterstitialAd, TestIds} from '@react-native-firebase/admob';
-import Post from "./src/components/Post";
+import {FlatList, SafeAreaView, Button, View, Alert} from 'react-native';
+import Post from './src/components/Post';
 
-const adUnitId = __DEV__ ? TestIds.INTERSTITIAL : 'ca-app-pub-1961781251976352/8135973027';
+const interstitial = InterstitialAd.createForAdRequest(TestIds.INTERSTITIAL, {
+  requestNonPersonalizedAdsOnly: true,
+  keywords: ['travel'],
+});
 
-const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
-    requestNonPersonalizedAdsOnly: true,
-    keywords: ['fashion', 'clothing'],
+const rewarded = RewardedAd.createForAdRequest(TestIds.REWARDED, {
+  requestNonPersonalizedAdsOnly: true,
+  keywords: ['travel'],
 });
 
 const App = () => {
-    const [loaded, setLoaded] = useState(false);
+  const [interstitialLoaded, setInterstitialLoaded] = useState(false);
+  const [rewardedLoaded, setRewardedLoaded] = useState(false);
 
-    useEffect(() => {
-        const loadedListener = interstitial.onAdEvent(type => {
-            if (type === AdEventType.LOADED) {
-                setLoaded(true);
-                // interstitial.show()
-            }
-        });
+  useEffect(() => {
+    const interstitialListener = interstitial.onAdEvent(type => {
+      if (type === AdEventType.LOADED) {
+        setInterstitialLoaded(true);
+      }
+    });
 
-        interstitial.load();
+    const rewardedListener = rewarded.onAdEvent((type, error, reward) => {
+      if (type === RewardedAdEventType.LOADED) {
+        setRewardedLoaded(true);
+      }
 
-        return () => {
-            loadedListener();
-        };
-    }, []);
+      if (type === RewardedAdEventType.EARNED_REWARD) {
+        console.log('User earned reward of ', reward);
+      }
+    });
 
-    if (!loaded) {
-        return null;
+    interstitial.load();
+    rewarded.load();
+
+    return () => {
+      interstitialListener();
+      rewardedListener();
+    };
+  }, []);
+
+  const onInterstitial = () => {
+    if (!interstitialLoaded) {
+      return Alert.alert('No more ads');
     }
 
-    const fakeData = [...Array(20)].map((x, id) => ({id: id.toString()}));
+    setInterstitialLoaded(false);
+    return interstitial.show();
+  };
 
-    return (
-        <SafeAreaView>
-            <FlatList
-                data={fakeData}
-                renderItem={({item}) => <Post id={item.id}/>}
-                keyExtractor={item => item.id}
-            />
-        </SafeAreaView>
-    )
+  const onRewarded = () => {
+    if (!rewardedLoaded) {
+      return Alert.alert('No more ads');
+    }
+
+    setRewardedLoaded(false);
+    return rewarded.show();
+  };
+
+  const fakeData = [...Array(20)].map((x, id) => ({id: id.toString()}));
+
+  return (
+    <SafeAreaView>
+      <BannerAd unitId={TestIds.BANNER} size={BannerAdSize.FULL_BANNER} />
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          marginVertical: 10,
+        }}>
+        <Button title="Show interstitial" onPress={onInterstitial} />
+        <Button title="Show rewarded" onPress={onRewarded} />
+      </View>
+
+      <FlatList
+        data={fakeData}
+        renderItem={({item}) => <Post id={item.id} />}
+        keyExtractor={item => item.id}
+      />
+    </SafeAreaView>
+  );
 };
 
 export default App;
