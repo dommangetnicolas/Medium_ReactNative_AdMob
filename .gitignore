@@ -60,5 +60,5 @@ buck-out/
 
 # Api Keys
 /ios/GoogleService-Info.plist
-/android/app/GoogleService-Info.plist
 firebase.json
+android/app/google-services.json
