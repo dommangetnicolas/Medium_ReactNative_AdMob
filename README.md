@@ -1,8 +1,8 @@
-<a href="https://medium.com/@nicolas_dmg" rel="noopener noreferrer" target="_blank"><img src="https://cdn-images-1.medium.com/max/800/1*UvQ4lL4BW-Lty0oowQEWEQ.png" title="Medium Cover" alt="Medium Cover"></a>
+<a href="https://medium.com/@nicolas_dmg/implementing-google-admob-in-react-native-fdeb51b4b52b" rel="noopener noreferrer" target="_blank"><img src="https://cdn-images-1.medium.com/max/800/1*UvQ4lL4BW-Lty0oowQEWEQ.png" title="Medium Cover" alt="Medium Cover"></a>
 
 # Implementing Google AdMob in React Native
 
-> <a href="https://medium.com/@nicolas_dmg" rel="noopener noreferrer" target="_blank">A medium article to use Google AdMob in your React Native App by using react-native-firebase.</a>
+> <a href="https://medium.com/@nicolas_dmg/implementing-google-admob-in-react-native-fdeb51b4b52b" rel="noopener noreferrer" target="_blank">A medium article to use Google AdMob in your React Native App by using react-native-firebase.</a>
 
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org) 
 
